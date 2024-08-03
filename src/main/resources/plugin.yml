@@ -1,0 +1,10 @@
+name: DisplayDamage
+main: org.sobadfish.displaydamage.PluginMain
+version: 1.0.1
+api:
+  - 1.0.14
+author: Sobadfish
+
+
+load: STARTUP
+
