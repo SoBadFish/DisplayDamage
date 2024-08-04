@@ -50,13 +50,13 @@ public class PluginMain extends PluginBase implements Listener {
             }else{
                 numTitle = "damage:epd";
             }
-            displayAsParticle(damage+"",numTitle,entity.asVector3f().add(0,1.5f),entity.level,damager.getDirection(),entity);
+            displayAsParticle(damage+"",numTitle,entity);
             return;
         }
         if(entity instanceof Player){
-            displayAsParticle(damage+"","damage:epd",entity.asVector3f().add(0,1.5f),entity.level,entity.getDirection(),entity);
+            displayAsParticle(damage+"","damage:epd",entity);
         }else{
-            displayAsParticle(damage+"","damage:ed",entity.asVector3f().add(0,1.5f),entity.level,entity.getDirection(),entity);
+            displayAsParticle(damage+"","damage:ed",entity);
         }
 
     }
@@ -66,27 +66,30 @@ public class PluginMain extends PluginBase implements Listener {
     public void onEntityHealEvent(EntityRegainHealthEvent event) {
         Entity entity = event.getEntity();
         int heal = (int) event.getAmount();
-        displayAsParticle(heal+"","damage:ph",entity.asVector3f().add(0,1.5f),entity.level,entity.getDirection(),entity);
+        displayAsParticle(heal+"","damage:ph",entity);
     }
 
-    private void displayAsParticle(String damage,String numTitle, Vector3f dv3, Level level, BlockFace blockFace,Vector3 chunk){
-        BlockFace rf = blockFace.rotateY();
-        float v2 = 0.25f;
-        for(char c: damage.toCharArray()){
-            if(c >= '0' && c <= '9'){
-                Vector3f r2 = getSide(dv3,rf,v2);
-                SpawnParticleEffectPacket pk = new SpawnParticleEffectPacket();
-                pk.identifier = numTitle;
-                pk.dimensionId = level.getDimensionData().getDimensionId();
-                pk.position = r2;
-                int size = c - '0' ;
-                pk.molangVariablesJson = ("[{\"name\":\"variable.num\",\"value\":{\"type\":\"float\",\"value\":" +
-                        size +
-                        "}}]").describeConstable();
-                level.addChunkPacket(chunk.getChunkX(), chunk.getChunkZ(), pk);
-                v2+= 0.25f;
+    private void displayAsParticle(String damage,String numTitle, Entity displayEntity){
+        for(Player ckPlayer: displayEntity.level.getChunkPlayers(displayEntity.getChunkX(),displayEntity.getChunkZ()).values()){
+            float v2 = 0.25f;
+            Vector3f dv3 = displayEntity.asVector3f().add(0,1.5f);
+            for(char c: damage.toCharArray()){
+                if(c >= '0' && c <= '9'){
+                    Vector3f r2 = getSide(dv3,ckPlayer.getDirection().rotateY(),v2);
+                    SpawnParticleEffectPacket pk = new SpawnParticleEffectPacket();
+                    pk.identifier = numTitle;
+                    pk.dimensionId = displayEntity.level.getDimensionData().getDimensionId();
+                    pk.position = r2;
+                    int size = c - '0' ;
+                    pk.molangVariablesJson = ("[{\"name\":\"variable.num\",\"value\":{\"type\":\"float\",\"value\":" +
+                            size +
+                            "}}]").describeConstable();
+                    ckPlayer.dataPacket(pk);
+                    v2+= 0.25f;
+                }
             }
         }
+
 
     }
 
