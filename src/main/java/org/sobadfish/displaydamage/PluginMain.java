@@ -50,13 +50,13 @@ public class PluginMain extends PluginBase implements Listener {
             }else{
                 numTitle = "damage:epd";
             }
-            displayAsParticle(damage+"",numTitle,entity.asVector3f().add(0,1.5f),entity.level,damager.getDirection(),damager.yaw,entity);
+            displayAsParticle(damage+"",numTitle,entity.asVector3f().add(0,1.5f),entity.level,damager.getDirection(),entity);
             return;
         }
         if(entity instanceof Player){
-            displayAsParticle(damage+"","damage:epd",entity.asVector3f().add(0,1.5f),entity.level,entity.getDirection(),entity.yaw,entity);
+            displayAsParticle(damage+"","damage:epd",entity.asVector3f().add(0,1.5f),entity.level,entity.getDirection(),entity);
         }else{
-            displayAsParticle(damage+"","damage:ed",entity.asVector3f().add(0,1.5f),entity.level,entity.getDirection(),entity.yaw,entity);
+            displayAsParticle(damage+"","damage:ed",entity.asVector3f().add(0,1.5f),entity.level,entity.getDirection(),entity);
         }
 
     }
@@ -66,18 +66,15 @@ public class PluginMain extends PluginBase implements Listener {
     public void onEntityHealEvent(EntityRegainHealthEvent event) {
         Entity entity = event.getEntity();
         int heal = (int) event.getAmount();
-        displayAsParticle(heal+"","damage:ph",entity.asVector3f().add(0,1.5f),entity.level,entity.getDirection(),entity.yaw,entity);
+        displayAsParticle(heal+"","damage:ph",entity.asVector3f().add(0,1.5f),entity.level,entity.getDirection(),entity);
     }
 
-    private void displayAsParticle(String damage,String numTitle, Vector3f dv3, Level level, BlockFace blockFace,double yaw,Vector3 chunk){
+    private void displayAsParticle(String damage,String numTitle, Vector3f dv3, Level level, BlockFace blockFace,Vector3 chunk){
         BlockFace rf = blockFace.rotateY();
         float v2 = 0.25f;
         for(char c: damage.toCharArray()){
             if(c >= '0' && c <= '9'){
                 Vector3f r2 = getSide(dv3,rf,v2);
-                double see = (yaw + 180) * Math.PI / 180;
-                r2.x = (float) (r2.x + 0.25f  * Math.cos(see));
-                r2.z = (float) (r2.z + 0.25f * Math.sin(see));
                 SpawnParticleEffectPacket pk = new SpawnParticleEffectPacket();
                 pk.identifier = numTitle;
                 pk.dimensionId = level.getDimensionData().getDimensionId();
