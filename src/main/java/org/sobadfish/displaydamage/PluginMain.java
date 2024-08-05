@@ -70,6 +70,9 @@ public class PluginMain extends PluginBase implements Listener {
         }
         Entity entity = event.getEntity();
         int heal = (int) event.getAmount();
+        if(entity.getHealth() >= entity.getMaxHealth()){
+            return;
+        }
         DamageApi.displayAsParticle(heal,"damage:ph",entity.getPosition().add(0,2f));
     }
 
