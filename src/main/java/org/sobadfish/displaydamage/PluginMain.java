@@ -9,6 +9,7 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityRegainHealthEvent;
 import cn.nukkit.plugin.PluginBase;
+import org.sobadfish.displaydamage.dto.DamageTextDTO;
 
 
 /**
@@ -51,13 +52,14 @@ public class PluginMain extends PluginBase implements Listener {
             }else{
                 numTitle = "damage:epd";
             }
-            DamageApi.displayAsParticle(damage,numTitle,entity.getPosition().add(0,2f));
+//            DamageApi.displayAsParticle(damage,numTitle,entity.getPosition().add(0,2f));
+            DamageApi.displayAsParticle(new DamageTextDTO(damage,entity.getPosition().add(0,2f),numTitle));
             return;
         }
         if(entity instanceof Player){
-            DamageApi.displayAsParticle(damage,"damage:epd",entity.getPosition().add(0,2f));
+            DamageApi.displayAsParticle(new DamageTextDTO(damage,entity.getPosition().add(0,2f),"damage:epd"));
         }else{
-            DamageApi.displayAsParticle(damage,"damage:ed",entity.getPosition().add(0,2f));
+            DamageApi.displayAsParticle(new DamageTextDTO(damage,entity.getPosition().add(0,2f),"damage:ed"));
         }
 
     }
@@ -73,7 +75,8 @@ public class PluginMain extends PluginBase implements Listener {
         if(entity.getHealth() >= entity.getMaxHealth()){
             return;
         }
-        DamageApi.displayAsParticle(heal,"damage:ph",entity.getPosition().add(0,2f));
+        DamageApi.displayAsParticle(new DamageTextDTO(heal,entity.getPosition().add(0,2f),
+                "damage:ph",0.18f,0.18f,0.2f));
     }
 
 

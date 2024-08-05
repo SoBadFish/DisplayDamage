@@ -1,10 +1,10 @@
 package org.sobadfish.displaydamage;
 
 import cn.nukkit.Player;
-import cn.nukkit.level.Position;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3f;
 import cn.nukkit.network.protocol.SpawnParticleEffectPacket;
+import org.sobadfish.displaydamage.dto.DamageTextDTO;
 
 import java.util.SplittableRandom;
 
@@ -23,26 +23,30 @@ public class DamageApi {
 
     /**
      * 生成粒子数字
-     * @param damage 伤害值
-     * @param numTitle 粒子材质的identifier 做拓展插件可以自行传值
-     * @param position 显示伤害的位置
+     * @param damage 配置
+
      * */
-    public static void displayAsParticle(int damage,String numTitle, Position position){
+    public static void displayAsParticle(DamageTextDTO damage){
         float vx,vy,vz;
+        String ds =  damage.damage+"";
         vx = rand(-4,4) / 10f;
         vy = rand(-4,4)/ 10f;
         vz = rand(-4,4)/ 10f;
+        Vector3f dv3 = damage.position.asVector3f();
 
-        for(Player ckPlayer: position.level.getChunkPlayers(position.getChunkX(),position.getChunkZ()).values()){
-            float v2 = 0.25f;
-            Vector3f dv3 = position.asVector3f();
+        for(Player ckPlayer: damage.position.level.getChunkPlayers(damage.position.getChunkX(),damage.position.getChunkZ()).values()){
+            float v2 = damage.textWeight;
+            //向左偏移
+            Vector3f left = getSide(dv3,ckPlayer.getDirection().rotateYCCW(),v2 * (float) (ds.length() / 2));
 
-            for(char c: (damage+"").toCharArray()){
+            boolean textH = true;
+            for(char c:ds.toCharArray()){
                 if(c >= '0' && c <= '9'){
-                    Vector3f r2 = getSide(dv3,ckPlayer.getDirection().rotateY(),v2);
+                    Vector3f r2 = getSide(left,ckPlayer.getDirection().rotateY(),v2);
+                    r2 = r2.add(0,(!textH?-0.02f:0f));
                     SpawnParticleEffectPacket pk = new SpawnParticleEffectPacket();
-                    pk.identifier = numTitle;
-                    pk.dimensionId = position.level.getDimensionData().getDimensionId();
+                    pk.identifier = damage.texturesId;
+                    pk.dimensionId = damage.position.level.getDimensionData().getDimensionId();
                     pk.position = r2;
                     int size = c - '0' ;
                     pk.molangVariablesJson = ("[" +
@@ -52,10 +56,16 @@ public class DamageApi {
                             +
                             "{\"name\":\"variable.vy\",\"value\":{\"type\":\"float\",\"value\":" +vy+ "}},"
                             +
-                            "{\"name\":\"variable.vz\",\"value\":{\"type\":\"float\",\"value\":" +vz+ "}}"+
+                            "{\"name\":\"variable.vz\",\"value\":{\"type\":\"float\",\"value\":" +vz+ "}},"+
+
+                            "{\"name\":\"variable.width\",\"value\":{\"type\":\"float\",\"value\":" +damage.textWidth+ "}},"
+                            +
+                            "{\"name\":\"variable.height\",\"value\":{\"type\":\"float\",\"value\":" +damage.textHeight+ "}}"+
+
                             "]").describeConstable();
                     ckPlayer.dataPacket(pk);
-                    v2+= 0.25f;
+                    v2+= damage.textWeight;
+                    textH = !textH;
                 }
             }
         }
