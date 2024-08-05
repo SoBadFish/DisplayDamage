@@ -1,6 +1,6 @@
 name: DisplayDamage
 main: org.sobadfish.displaydamage.PluginMain
-version: 1.0.2
+version: 1.0.3
 api:
   - 1.0.14
 author: Sobadfish
