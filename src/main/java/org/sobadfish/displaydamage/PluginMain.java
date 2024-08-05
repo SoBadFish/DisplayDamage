@@ -87,10 +87,10 @@ public class PluginMain extends PluginBase implements Listener {
 
     private void displayAsParticle(String damage,String numTitle, Entity displayEntity){
         float vx,vy,vz;
-        vx = rand(0,4) / 10f;
-        vy = rand(0,4)/ 10f;
-        vz = rand(0,4)/ 10f;
-        Gson gs = new Gson();
+        vx = rand(-4,4) / 10f;
+        vy = rand(-4,4)/ 10f;
+        vz = rand(-4,4)/ 10f;
+
 
         for(Player ckPlayer: displayEntity.level.getChunkPlayers(displayEntity.getChunkX(),displayEntity.getChunkZ()).values()){
             float v2 = 0.25f;
