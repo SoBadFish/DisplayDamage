@@ -53,13 +53,13 @@ public class PluginMain extends PluginBase implements Listener {
                 numTitle = "damage:epd";
             }
 //            DamageApi.displayAsParticle(damage,numTitle,entity.getPosition().add(0,2f));
-            DamageApi.displayAsParticle(new DamageTextDTO(damage,entity.getPosition().add(0,2f),numTitle));
+            DamageApi.displayAsParticle(new DamageTextDTO(damage,entity.getPosition().add(0,entity.getEyeHeight()),numTitle));
             return;
         }
         if(entity instanceof Player){
-            DamageApi.displayAsParticle(new DamageTextDTO(damage,entity.getPosition().add(0,2f),"damage:epd"));
+            DamageApi.displayAsParticle(new DamageTextDTO(damage,entity.getPosition().add(0,entity.getEyeHeight()),"damage:epd"));
         }else{
-            DamageApi.displayAsParticle(new DamageTextDTO(damage,entity.getPosition().add(0,2f),"damage:ed"));
+            DamageApi.displayAsParticle(new DamageTextDTO(damage,entity.getPosition().add(0,entity.getEyeHeight()),"damage:ed"));
         }
 
     }
@@ -75,7 +75,7 @@ public class PluginMain extends PluginBase implements Listener {
         if(entity.getHealth() >= entity.getMaxHealth()){
             return;
         }
-        DamageApi.displayAsParticle(new DamageTextDTO(heal,entity.getPosition().add(0,2f),
+        DamageApi.displayAsParticle(new DamageTextDTO(heal,entity.getPosition().add(0,entity.getEyeHeight()),
                 "damage:ph",0.18f,0.18f,0.2f));
     }
 
