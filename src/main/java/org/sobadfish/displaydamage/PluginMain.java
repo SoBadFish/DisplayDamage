@@ -1,6 +1,8 @@
 package org.sobadfish.displaydamage;
 
 import cn.nukkit.Player;
+import cn.nukkit.command.Command;
+import cn.nukkit.command.CommandSender;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
@@ -9,7 +11,12 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityRegainHealthEvent;
 import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.utils.TextFormat;
 import org.sobadfish.displaydamage.dto.DamageTextDTO;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 
 /**
@@ -25,6 +32,11 @@ public class PluginMain extends PluginBase implements Listener {
      * */
     public boolean enable = true;
 
+    /**
+     * 阻止显示的玩家列表
+     * */
+    public List<String> enablePlayers = new ArrayList<>();
+
     @Override
     public void onEnable() {
         INSTANCE = this;
@@ -33,6 +45,22 @@ public class PluginMain extends PluginBase implements Listener {
 
     }
 
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if(sender instanceof Player){
+            if(enablePlayers.contains(sender.getName())) {
+                enablePlayers.remove(sender.getName());
+                sender.sendMessage(TextFormat.colorize('&',"伤害显示: &a开启"));
+            }else{
+                enablePlayers.add(sender.getName());
+                sender.sendMessage(TextFormat.colorize('&',"伤害显示: &c关闭"));
+            }
+        }else{
+            this.getLogger().info("请不要在控制台执行");
+        }
+
+        return true;
+    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamage(EntityDamageEvent event){

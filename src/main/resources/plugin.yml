@@ -8,3 +8,8 @@ author: Sobadfish
 
 load: STARTUP
 
+commands:
+  dpd:
+    description: "设置是否显示伤害粒子"
+    permission: default
+

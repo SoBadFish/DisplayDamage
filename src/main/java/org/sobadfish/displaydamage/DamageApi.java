@@ -35,6 +35,9 @@ public class DamageApi {
         Vector3f dv3 = damage.position.asVector3f();
 
         for(Player ckPlayer: damage.position.level.getChunkPlayers(damage.position.getChunkX(),damage.position.getChunkZ()).values()){
+            if(PluginMain.INSTANCE.enablePlayers.contains(ckPlayer.getName())){
+                continue;
+            }
             float v2 = damage.textWeight;
             //向左偏移
             Vector3f left = getSide(dv3,ckPlayer.getDirection().rotateYCCW(),v2 * (float) (ds.length() / 2));
