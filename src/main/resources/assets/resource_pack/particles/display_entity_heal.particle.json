@@ -32,10 +32,10 @@
 				"size": ["variable.width", "variable.height"],
 				"facing_camera_mode": "lookat_xyz",
 				"uv": {
-					"texture_width": 160,
-					"texture_height": 16,
-					"uv": ["variable.num * 16", 0],
-					"uv_size": [16, 16]
+					"texture_width": 640,
+					"texture_height": 64,
+					"uv": ["variable.num * 64", 0],
+					"uv_size": [64, 64]
 				}
 			},
 			"minecraft:particle_appearance_tinting": {

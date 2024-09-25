@@ -3,16 +3,16 @@
    "header" : {
       "description" : "§l§2伤害显示必备材质包！",
       "name" : "§l§6Display§bDamage §7材质包",
-      "uuid" : "71595977-0d09-4863-97f5-2b16dcd6a715",
-      "version" : [ 0, 1, 2 ]
+      "uuid" : "3dc2fbf3-97bd-456b-9c19-c16dc442b5a7",
+      "version" : [ 0, 1, 3 ]
 
    },
    "modules" : [
       {
          "description" : "§l§2伤害显示必备材质包！",
          "type" : "resources",
-         "uuid" : "615117bf-271e-4e2b-b1c2-9fe9777c6f5f",
-         "version" : [ 0, 1, 2 ]
+         "uuid" : "62147e64-0e0f-4cca-8bad-6ea4e5788e7a",
+         "version" : [ 0, 1, 3 ]
       }
    ]
 }
